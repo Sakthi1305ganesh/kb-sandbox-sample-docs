@@ -1,27 +1,20 @@
 # .platform-kb/kb-manifest.yaml
 # Knowledge Base manifest for sandbox content crawling.
 # Schema: platform-kb.trimble.com/v1alpha1 (ServiceKnowledgeManifest)
-# Validate: python scripts/validate-manifest.py .platform-kb/kb-manifest.yaml
-#
-# Replace all REPLACE_* placeholders before running the sandbox workflow.
 
 apiVersion: platform-kb.trimble.com/v1alpha1
 kind: ServiceKnowledgeManifest
 
-# ── SERVICE IDENTITY ────────────────────────────────────────────────────────
 service:
-  # Unique ID: lowercase, hyphens only. Must match KB catalog.
-  id: REPLACE_WITH_YOUR_SERVICE_ID
-
-  display_name: "REPLACE_WITH_SERVICE_DISPLAY_NAME"
-  owner_team: "REPLACE_WITH_TEAM_NAME"
+  id: kb-sandbox-sample-docs
+  display_name: "KB Sandbox Sample Docs"
+  owner_team: "platform-kb"
   contact:
-    slack: "#REPLACE_WITH_SLACK_CHANNEL"
-    email: "REPLACE_WITH_TEAM_EMAIL@trimble.com"
+    slack: "#platform-kb"
+    email: "platform-kb@trimble.com"
   lifecycle:
-    status: alpha   # ga | beta | alpha | deprecated | legacy
+    status: alpha
 
-# ── VERSIONING ──────────────────────────────────────────────────────────────
 versioning:
   strategy: semver
   config:
@@ -37,15 +30,13 @@ versioning:
       type: branch
       selector: main
 
-# ── DOCUMENTATION STRUCTURE ─────────────────────────────────────────────────
 documentation:
-  generator: mkdocs   # mkdocs | docusaurus | sphinx | gitbook | custom | none
+  generator: mkdocs
   root: "docs/"
   version_management:
     enabled: false
     tool: null
   paths:
-    # Required paths (set required: false if they don't exist in your repo)
     openapi:
       path: "openapi/openapi.yaml"
       required: false
@@ -58,7 +49,6 @@ documentation:
       path: "CHANGELOG.md"
       required: false
       versioned: false
-    # Docs content — adjust glob to match your structure
     content:
       pattern: "**/*.md"
       discovery: glob
@@ -77,7 +67,6 @@ documentation:
     - "**/dist/**"
     - "**/.DS_Store"
 
-# ── SYNC CONFIGURATION ──────────────────────────────────────────────────────
 sync:
   triggers:
     - type: on_manifest_change
@@ -93,16 +82,14 @@ sync:
       ci_check:
         required: false
 
-# ── SERVICE METADATA ────────────────────────────────────────────────────────
 service_info:
   status: alpha
   tier: 3
-  github_repo: "https://github.com/REPLACE_ORG/REPLACE_REPO"
+  github_repo: "https://github.com/Sakthi1305ganesh/kb-sandbox-sample-docs"
   depends_on:
     services: []
     infrastructure: []
 
-# ── MANIFEST METADATA ───────────────────────────────────────────────────────
 manifest:
-  last_updated: "2026-01-01T00:00:00Z"
-  updated_by: REPLACE_WITH_YOUR_GITHUB_USERNAME
+  last_updated: "2026-08-12T00:00:00Z"
+  updated_by: Sakthi1305ganesh
