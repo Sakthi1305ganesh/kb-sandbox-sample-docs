@@ -1,0 +1,108 @@
+# .platform-kb/kb-manifest.yaml
+# Knowledge Base manifest for sandbox content crawling.
+# Schema: platform-kb.trimble.com/v1alpha1 (ServiceKnowledgeManifest)
+# Validate: python scripts/validate-manifest.py .platform-kb/kb-manifest.yaml
+#
+# Replace all REPLACE_* placeholders before running the sandbox workflow.
+
+apiVersion: platform-kb.trimble.com/v1alpha1
+kind: ServiceKnowledgeManifest
+
+# ── SERVICE IDENTITY ────────────────────────────────────────────────────────
+service:
+  # Unique ID: lowercase, hyphens only. Must match KB catalog.
+  id: REPLACE_WITH_YOUR_SERVICE_ID
+
+  display_name: "REPLACE_WITH_SERVICE_DISPLAY_NAME"
+  owner_team: "REPLACE_WITH_TEAM_NAME"
+  contact:
+    slack: "#REPLACE_WITH_SLACK_CHANNEL"
+    email: "REPLACE_WITH_TEAM_EMAIL@trimble.com"
+  lifecycle:
+    status: alpha   # ga | beta | alpha | deprecated | legacy
+
+# ── VERSIONING ──────────────────────────────────────────────────────────────
+versioning:
+  strategy: semver
+  config:
+    semver:
+      pattern: "v?(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)(?:-(?P<prerelease>[a-zA-Z0-9.]+))?"
+      prerelease_indicators: [alpha, beta, rc, preview]
+      stable_branches: [main, master]
+  refs:
+    production:
+      type: branch
+      selector: main
+    staging:
+      type: branch
+      selector: main
+
+# ── DOCUMENTATION STRUCTURE ─────────────────────────────────────────────────
+documentation:
+  generator: mkdocs   # mkdocs | docusaurus | sphinx | gitbook | custom | none
+  root: "docs/"
+  version_management:
+    enabled: false
+    tool: null
+  paths:
+    # Required paths (set required: false if they don't exist in your repo)
+    openapi:
+      path: "openapi/openapi.yaml"
+      required: false
+      versioned: false
+    getting_started:
+      path: "getting-started.md"
+      required: false
+      versioned: false
+    changelog:
+      path: "CHANGELOG.md"
+      required: false
+      versioned: false
+    # Docs content — adjust glob to match your structure
+    content:
+      pattern: "**/*.md"
+      discovery: glob
+      required: true
+      versioned: false
+      exclude:
+        - "**/node_modules/**"
+        - "**/.venv/**"
+        - "**/site/**"
+  exclude_patterns:
+    - "**/node_modules/**"
+    - "**/.venv/**"
+    - "**/__pycache__/**"
+    - "**/build/**"
+    - "**/site/**"
+    - "**/dist/**"
+    - "**/.DS_Store"
+
+# ── SYNC CONFIGURATION ──────────────────────────────────────────────────────
+sync:
+  triggers:
+    - type: on_manifest_change
+      action: validate_and_sync
+    - type: workflow_dispatch
+  workflow:
+    service_repo:
+      validation:
+        schema: true
+        paths_exist: true
+        openapi_valid: false
+        links_valid: false
+      ci_check:
+        required: false
+
+# ── SERVICE METADATA ────────────────────────────────────────────────────────
+service_info:
+  status: alpha
+  tier: 3
+  github_repo: "https://github.com/REPLACE_ORG/REPLACE_REPO"
+  depends_on:
+    services: []
+    infrastructure: []
+
+# ── MANIFEST METADATA ───────────────────────────────────────────────────────
+manifest:
+  last_updated: "2026-01-01T00:00:00Z"
+  updated_by: REPLACE_WITH_YOUR_GITHUB_USERNAME

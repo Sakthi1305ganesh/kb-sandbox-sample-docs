@@ -1,0 +1,15 @@
+name: Sandbox KB
+# Trigger a sandbox run manually from Actions → Sandbox KB → Run workflow.
+# The reusable workflow in platform-services-kb handles all Trimble credentials.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sandbox:
+    uses: trimble-oss/platform-services-kb/.github/workflows/sandbox-kb.yml@v1
+    with:
+      repo: ${{ github.repository }}
+      ref:  ${{ github.sha }}
+    secrets:
+      CALLER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

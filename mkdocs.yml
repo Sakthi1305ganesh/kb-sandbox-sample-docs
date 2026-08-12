@@ -1,0 +1,8 @@
+site_name: REPLACE_WITH_YOUR_SERVICE_NAME
+docs_dir: docs
+
+nav:
+  - Home: index.md
+
+theme:
+  name: material
